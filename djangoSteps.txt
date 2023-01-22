@@ -1,0 +1,28 @@
+Django Projects:
+
+1. Create a project:
+	django-admin startproject <projectName>
+
+2. Move inside project:
+	cd <projectName>
+
+3. Create an app:
+	python3 manage.py startapp <appName>
+
+4. Add app to project settings files in the 'INSTALLED_APPS' list.
+
+5. Create a model for the app in appName/models.py.
+
+6. Migrating out changes to the database.
+
+	i.  python3 manage.py makemigrations <appName>
+	ii. python3 manage.py migrate
+
+7. Check database:
+	sqlite3 db.sqlite3 ".tables"
+	sqlite3 db.sqlite3 "SELECT * FROM toys_toy ORDER BY name;"
+	sqlite3 db.sqlite3 ".schema toys_toy"
+
+8. Using Django shell:
+	python3 manage.py shell
+
