@@ -4,19 +4,14 @@ Author: Gaston C. Hillar - Twitter.com/gastonhillar
 Publisher: Packt Publishing Ltd. - http://www.packtpub.com
 """
 from django.shortcuts import render
-from rest_framework import generics
+from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
-from .models import DroneCategory
-from .models import Drone
-from .models import Pilot
-from .models import Competition
-from .serializers import DroneCategorySerializer
-from .serializers import DroneSerializer
-from .serializers import PilotSerializer
-from .serializers import PilotCompetitionSerializer
+from .models import DroneCategory, Drone, Pilot, Competition
+from .serializers import DroneCategorySerializer, DroneSerializer, PilotSerializer, PilotCompetitionSerializer
 from django_filters import rest_framework as filters
 from django_filters import AllValuesFilter, DateTimeFilter, NumberFilter
+from . import customPermissions
 
 
 class DroneCategoryList(generics.ListCreateAPIView):
@@ -58,12 +53,23 @@ class DroneList(generics.ListCreateAPIView):
         'name',
         'manufacturing_date',
     )  # Database should be indexed accordingly
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        customPermissions.IsCurrentUserOwnerOrReadOnly,
+    )
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class DroneDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Drone.objects.all()
     serializer_class = DroneSerializer
     name = 'drone-detail'
+    permission_classes = (
+        permissions.IsAuthenticatedOrReadOnly,
+        customPermissions.IsCurrentUserOwnerOrReadOnly,
+    )
 
 
 class PilotList(generics.ListCreateAPIView):
