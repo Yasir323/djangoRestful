@@ -12,6 +12,8 @@ from .serializers import DroneCategorySerializer, DroneSerializer, PilotSerializ
 from django_filters import rest_framework as filters
 from django_filters import AllValuesFilter, DateTimeFilter, NumberFilter
 from . import customPermissions
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import TokenAuthentication
 
 
 class DroneCategoryList(generics.ListCreateAPIView):
@@ -76,12 +78,19 @@ class PilotList(generics.ListCreateAPIView):
     queryset = Pilot.objects.all()
     serializer_class = PilotSerializer
     name = 'pilot-list'
+    filter_fields = ('name', 'gender', 'races_count')
+    search_fields = ('^name',)
+    ordering_fields = ('name', 'races_count')
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 class PilotDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Pilot.objects.all()
     serializer_class = PilotSerializer
     name = 'pilot-detail'
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
 
 
 class CompetitionFilter(filters.FilterSet):

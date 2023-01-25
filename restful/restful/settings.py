@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'toys.apps.ToysConfig',  # Toys app
     'drones.apps.DronesConfig',  # Toys app
     'django_filters',  # Django filters
+    'rest_framework.authtoken',  # Token based authentication
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'restful.urls'
+
 
 TEMPLATES = [
     {
