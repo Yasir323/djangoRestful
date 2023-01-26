@@ -20,7 +20,10 @@ from rest_framework.authtoken.views import obtain_auth_token
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('toys/', include('toys.urls')),
-    path('drones/', include('drones.urls')),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api-token-auth/', obtain_auth_token, name='api_token_auth')
+    path('v1/drones/', include(('drones.urls', 'dronesV1'), namespace='v1')),
+    path('v2/drones/', include(('drones.v2.urls', 'dronesV2'), namespace='v2')),
+    path('v1/api-auth/', include(('rest_framework.urls', 'authV1'), namespace='rest_framework_v1')),
+    path('v2/api-auth/', include(('rest_framework.urls', 'authV2'), namespace='rest_framework_v2')),
+    path('v1/api-token-auth/', obtain_auth_token, name='api_token_auth'),
+    path('v2/api-token-auth/', obtain_auth_token, name='api_token_auth')
 ]
